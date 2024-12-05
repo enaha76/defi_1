@@ -4,7 +4,7 @@ import { useLayoutEffect, useState } from "react";
 import HumeLogo from "./logos/Hume";
 import { Moon, Sun } from "lucide-react";
 import Github from "./logos/GitHub";
-import pkg from '@/package.json';
+import pkg from "@/package.json";
 import Link from "next/link";
 import { Button } from "./ui/button";
 
@@ -30,42 +30,24 @@ export const Nav = () => {
   return (
     <div
       className={
-        "px-4 py-2 flex items-center h-14 z-50 bg-card border-b border-border"
+        "px-4 py-2 flex items-center bg-gradient-to-b from-teal-50 to-cyan-100  h-14 z-50 bg-card border-b border-border"
       }
     >
       <div>
         <HumeLogo className={"h-5 w-auto"} />
       </div>
-      <div className={"ml-auto flex items-center gap-1"}>
-        <Button 
-          className={"ml-auto flex items-center gap-1.5"}
-        >
-          <Link href="/" passHref>Accueil</Link >
-            </Button>
-            <Button
-          className={"ml-auto flex items-center gap-1.5"}
-        >
-          <Link href="/explorer" passHref>Explorer</Link >
-            </Button>
-              <Button
-          className={"ml-auto flex items-center gap-1.5"}
-        >
-          <Link href="/podcast" passHref>Podcast</Link >
-            </Button>
-        <Button
-          onClick={toggleDark}
-          variant={"ghost"}
-          className={"ml-auto flex items-center gap-1.5"}
-        >
-          <span>
-            {isDarkMode ? (
-              <Sun className={"size-4"} />
-            ) : (
-              <Moon className={"size-4"} />
-            )}
-          </span>
-          <span>{isDarkMode ? "Light" : "Dark"} Mode</span>
-        </Button>
+      <div className={"ml-auto flex items-center gap-5"}>
+        <Link href="/" passHref>
+          Accueil
+        </Link>
+
+        <Link href="/explorer" passHref>
+          Explorer
+        </Link>
+
+        <Link href="/podcast" passHref>
+          Podcast
+        </Link>
       </div>
     </div>
   );
