@@ -58,7 +58,7 @@ export default function HomePage() {
           transition={{ duration: 0.7, delay: 1, ease: "easeOut" }}
         >
           <Link
-            href="/exploration"
+            href="/explorer"
             className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-3 px-8 rounded-full text-lg transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg"
           >
             Commencer l&apos;exploration
@@ -70,7 +70,9 @@ export default function HomePage() {
       <section className="container mx-auto grid grid-cols-1 md:grid-cols-2 items-center gap-8 py-12 px-4">
         <div>
           <img
-            src="/ocean-life.jpg"
+            src="/explorer/oc.jpg"
+            width="580"
+            height="400"
             alt="Ocean Life Sustainability"
             className="rounded-lg shadow-lg"
           />
@@ -100,7 +102,7 @@ export default function HomePage() {
             habitées par des créatures fascinantes.
           </p>
           <Link
-            href="/ocean-zones"
+            href="/explorer"
             className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-3 px-8 rounded-full text-lg transition duration-300"
           >
             Explorer les zones
