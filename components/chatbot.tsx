@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useState, ChangeEvent, KeyboardEvent } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane, faRotateLeft } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 
 interface Message {
   text: string;
@@ -14,19 +15,45 @@ const Chatbot: React.FC = () => {
   const [chatbotOpen, setChatbotOpen] = useState<boolean>(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [userInput, setUserInput] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (userInput.trim() === "") return;
 
     const userMessage: Message = { text: userInput, sender: "user" };
     setMessages((prev) => [...prev, userMessage]);
 
-    const botResponse: Message = generateResponse(userInput);
-    setTimeout(() => {
-      setMessages((prev) => [...prev, botResponse]);
-    }, 1000);
-
     setUserInput("");
+    setIsLoading(true);
+
+    try {
+      // Make API call using Axios
+      const response = await axios.post(
+        "https://maurifun.xyz/main/agent_water",
+        {
+          query: userInput,
+        }
+      );
+
+      const botResponse: Message = {
+        text: response.data.response || "Réponse indisponible",
+        sender: "bot",
+      };
+
+      // Append bot's response to the chat
+      setMessages((prev) => [...prev, botResponse]);
+    } catch (error) {
+      console.error("Error fetching AI response:", error);
+      setMessages((prev) => [
+        ...prev,
+        {
+          text: "Erreur : impossible d'obtenir une réponse. Réessayez plus tard.",
+          sender: "bot",
+        },
+      ]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleReset = () => {
@@ -39,32 +66,6 @@ const Chatbot: React.FC = () => {
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") handleSend();
-  };
-
-  const generateResponse = (input: string): Message => {
-    const lowerInput = input.toLowerCase();
-
-    if (lowerInput.includes("courants marins")) {
-      return {
-        text: "Les courants marins transportent chaleur et nutriments comme les veines de l'océan.",
-        sender: "bot",
-      };
-    } else if (lowerInput.includes("phytoplancton")) {
-      return {
-        text: "Le phytoplancton produit plus de 50% de l'oxygène sur Terre.",
-        sender: "bot",
-      };
-    } else if (lowerInput.includes("protéger l'océan")) {
-      return {
-        text: "Réduisez votre usage de plastique et soutenez des initiatives de conservation.",
-        sender: "bot",
-      };
-    } else {
-      return {
-        text: "Je suis désolé, je n'ai pas compris. Posez une question sur les courants marins, le phytoplancton, ou la protection des océans.",
-        sender: "bot",
-      };
-    }
   };
 
   return (
@@ -116,6 +117,11 @@ const Chatbot: React.FC = () => {
                 </p>
               </div>
             ))}
+            {isLoading && (
+              <div className="text-gray-500 text-sm italic">
+                Le bot réfléchit...
+              </div>
+            )}
           </div>
 
           {/* Input Section with Icons */}

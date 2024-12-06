@@ -102,7 +102,7 @@ export default function HomePage() {
             habitées par des créatures fascinantes.
           </p>
           <Link
-            href="/ocean-zones"
+            href="/explorer"
             className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-3 px-8 rounded-full text-lg transition duration-300"
           >
             Explorer les zones
