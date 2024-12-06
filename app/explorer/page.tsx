@@ -39,7 +39,7 @@ const data = [
     oceanComponent: "Fond de l'océan",
     description:
       "Les os et le fond des océans fournissent une structure et un soutien indispensables à leurs écosystèmes respectifs.",
-    image: "/explorer/Os.jpg",
+    image: "/explorer/Os7.jpg",
   },
   {
     title: "Vaisseaux sanguins",
@@ -52,6 +52,13 @@ const data = [
 
 export default function Explorer() {
   const [selectedOrgan, setSelectedOrgan] = useState(data[0]);
+
+  const handleCardClick = (item) => {
+    setSelectedOrgan(item);
+    setTimeout(() => {
+      document.getElementById("mainImage").scrollIntoView({ behavior: "smooth" });
+    }, 100); // Petite pause pour garantir la mise à jour avant le scroll
+  };
 
   return (
     <div className="px-4 py-2 flex flex-col bg-gradient-to-b from-teal-50 to-cyan-100 min-h-screen">
@@ -78,6 +85,7 @@ export default function Explorer() {
         {/* Contenu Principal */}
         <div className="flex flex-col items-center md:w-2/3">
           <motion.div
+            id="mainImage" // ID pour cibler l'image
             className="flex justify-center mb-6"
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -134,7 +142,7 @@ export default function Explorer() {
             {data.map((item, index) => (
               <motion.div
                 key={index}
-                onClick={() => setSelectedOrgan(item)}
+                onClick={() => handleCardClick(item)}
                 className={`border rounded-lg shadow-lg p-4 bg-white flex flex-col cursor-pointer ${
                   selectedOrgan.title === item.title ? "border-teal-700" : ""
                 }`}
@@ -151,9 +159,8 @@ export default function Explorer() {
           </motion.div>
         </div>
       </motion.div>
-
-      {/* Section À propos avec image et contenu */}
-      <div className="mt-12 p-8 bg-gradient-to-r from-teal-50 to-cyan-50 shadow-lg rounded-lg max-w-5xl mx-auto flex flex-col md:flex-row items-center">
+       {/* Section À propos avec image et contenu */}
+       <div className="mt-12 p-8 bg-gradient-to-r from-teal-50 to-cyan-50 shadow-lg rounded-lg max-w-5xl mx-auto flex flex-col md:flex-row items-center">
         {/* Image de l'océan */}
         <motion.div
           className="w-full md:w-1/2 flex justify-center mb-6 md:mb-0"
@@ -190,7 +197,7 @@ export default function Explorer() {
             Découvrir davantage
           </Button>
         </motion.div>
-      </div>
+        </div>
     </div>
   );
 }
