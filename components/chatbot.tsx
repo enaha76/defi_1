@@ -3,7 +3,11 @@
 import { motion } from "framer-motion";
 import { useState, ChangeEvent, KeyboardEvent } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane, faRotateLeft } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPaperPlane,
+  faRotateLeft,
+  faRobot,
+} from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
 interface Message {
@@ -27,12 +31,9 @@ const Chatbot: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // Make API call using Axios
       const response = await axios.post(
-        "https://maurifun.xyz/main/agent_water",
-        {
-          query: userInput,
-        }
+        "https://maurifun.xyz/main/agent_water/",
+        { query: userInput }
       );
 
       const botResponse: Message = {
@@ -40,7 +41,6 @@ const Chatbot: React.FC = () => {
         sender: "bot",
       };
 
-      // Append bot's response to the chat
       setMessages((prev) => [...prev, botResponse]);
     } catch (error) {
       console.error("Error fetching AI response:", error);
@@ -100,27 +100,54 @@ const Chatbot: React.FC = () => {
               </p>
             )}
             {messages.map((message, index) => (
-              <div
+              <motion.div
                 key={index}
-                className={`mb-4 ${
-                  message.sender === "user" ? "text-right" : "text-left"
+                className={`mb-4 flex ${
+                  message.sender === "user" ? "justify-end" : "justify-start"
                 }`}
+                initial={{
+                  opacity: 0,
+                  x: message.sender === "user" ? 50 : -50,
+                }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3 }}
               >
-                <p
-                  className={`inline-block px-4 py-2 rounded-lg ${
-                    message.sender === "user"
-                      ? "bg-teal-600 text-white"
-                      : "bg-gray-200 text-gray-800"
-                  }`}
-                >
-                  {message.text}
-                </p>
-              </div>
+                {message.sender === "bot" ? (
+                  <div className="flex items-start">
+                    {/* Robot Icon for Bot Messages */}
+                    <FontAwesomeIcon
+                      icon={faRobot}
+                      className="w-8 h-8 text-teal-600 mr-3 animate-bounce"
+                    />
+                    {/* Bot Message */}
+                    <div className="px-5 py-3 bg-gray-100 text-gray-800 rounded-lg shadow-md max-w-sm">
+                      <p className="text-sm md:text-base leading-relaxed">
+                        {message.text}
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="px-5 py-3 bg-teal-600 text-white rounded-lg shadow-md max-w-sm">
+                    <p className="text-sm md:text-base leading-relaxed">
+                      {message.text}
+                    </p>
+                  </div>
+                )}
+              </motion.div>
             ))}
             {isLoading && (
-              <div className="text-gray-500 text-sm italic">
+              <motion.div
+                className="text-gray-500 text-sm italic"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{
+                  duration: 0.3,
+                  repeat: Infinity,
+                  repeatType: "reverse",
+                }}
+              >
                 Le bot réfléchit...
-              </div>
+              </motion.div>
             )}
           </div>
 

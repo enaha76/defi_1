@@ -53,10 +53,16 @@ const data = [
 export default function Explorer() {
   const [selectedOrgan, setSelectedOrgan] = useState(data[0]);
 
-  const handleCardClick = (item) => {
+  const handleCardClick = (item: any) => {
     setSelectedOrgan(item);
+
     setTimeout(() => {
-      document.getElementById("mainImage").scrollIntoView({ behavior: "smooth" });
+      const mainImageElement = document.getElementById("mainImage");
+      if (mainImageElement) {
+        mainImageElement.scrollIntoView({ behavior: "smooth" });
+      } else {
+        console.warn("Element with ID 'mainImage' not found.");
+      }
     }, 100); // Petite pause pour garantir la mise à jour avant le scroll
   };
 
@@ -108,15 +114,20 @@ export default function Explorer() {
           >
             <Card>
               <CardBody>
-                <h2 className="text-2xl font-semibold mb-2">{selectedOrgan.title}</h2>
+                <h2 className="text-2xl font-semibold mb-2">
+                  {selectedOrgan.title}
+                </h2>
                 <p className="text-gray-600 mb-1">
-                  <strong>Composant Océanique :</strong> {selectedOrgan.oceanComponent}
+                  <strong>Composant Océanique :</strong>{" "}
+                  {selectedOrgan.oceanComponent}
                 </p>
                 <p className="text-gray-600">{selectedOrgan.description}</p>
               </CardBody>
               <CardFooter className="flex justify-end">
                 <Button
-                  onPress={() => alert(`En savoir plus sur ${selectedOrgan.title}`)}
+                  onPress={() =>
+                    alert(`En savoir plus sur ${selectedOrgan.title}`)
+                  }
                   className="bg-teal-600 text-white px-4 py-2 hover:bg-teal-700 rounded-full"
                 >
                   En savoir plus
@@ -159,8 +170,8 @@ export default function Explorer() {
           </motion.div>
         </div>
       </motion.div>
-       {/* Section À propos avec image et contenu */}
-       <div className="mt-12 p-8 bg-gradient-to-r from-teal-50 to-cyan-50 shadow-lg rounded-lg max-w-5xl mx-auto flex flex-col md:flex-row items-center">
+      {/* Section À propos avec image et contenu */}
+      <div className="mt-12 p-8 bg-gradient-to-r from-teal-50 to-cyan-50 shadow-lg rounded-lg max-w-5xl mx-auto flex flex-col md:flex-row items-center">
         {/* Image de l'océan */}
         <motion.div
           className="w-full md:w-1/2 flex justify-center mb-6 md:mb-0"
@@ -184,11 +195,15 @@ export default function Explorer() {
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-3xl font-bold mb-4 text-teal-700">À propos du projet</h2>
+          <h2 className="text-3xl font-bold mb-4 text-teal-700">
+            À propos du projet
+          </h2>
           <p className="text-gray-700 leading-7 mb-4">
-            Ce projet explore les analogies fascinantes entre le corps humain et les composantes essentielles des océans. 
-            En combinant des visuels dynamiques et des descriptions détaillées, nous cherchons à illustrer les liens profonds 
-            entre ces deux mondes apparemment distincts mais interdépendants.
+            Ce projet explore les analogies fascinantes entre le corps humain et
+            les composantes essentielles des océans. En combinant des visuels
+            dynamiques et des descriptions détaillées, nous cherchons à
+            illustrer les liens profonds entre ces deux mondes apparemment
+            distincts mais interdépendants.
           </p>
           <Button
             onPress={() => alert("Merci de votre intérêt pour ce projet !")}
@@ -197,7 +212,7 @@ export default function Explorer() {
             Découvrir davantage
           </Button>
         </motion.div>
-        </div>
+      </div>
     </div>
   );
 }
