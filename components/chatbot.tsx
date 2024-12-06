@@ -29,7 +29,7 @@ const Chatbot: React.FC = () => {
     try {
       // Make API call using Axios
       const response = await axios.post(
-        "https://maurifun.xyz/main/agent_water",
+        "https://maurifun.xyz/main/agent_water/",
         {
           query: userInput,
         }
